@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        {{ $__env->yieldContent('title') ? $__env->yieldContent('title') . ' | ' : '' }}{{ config('app.name', 'Laravel') }}
+    </title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -76,6 +78,7 @@
             font-weight: 600;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body>
@@ -141,29 +144,7 @@
                 @yield('content')
             </main>
         @else
-            <!-- Sidebar Offcanvas -->
-            <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasSidebar"
-                aria-labelledby="offcanvasSidebarLabel">
-                <div class="offcanvas-header border-bottom border-secondary">
-                    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">{{ config('app.name', 'Laravel') }}</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <a href="{{ route('home') }}" class="sidebar-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                        Dashboard</a>
-
-                    <a href="#" class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}"> Users</a>
-
-                    <a href="#" class="sidebar-link {{ request()->routeIs('settings') ? 'active' : '' }}">
-                        Settings</a>
-
-                    <div class="sidebar-heading">Account</div>
-                    <a href="#" class="sidebar-link {{ request()->routeIs('profile') ? 'active' : '' }}">
-                        Profile</a>
-                </div>
-            </div>
-
+            @include('layouts.sidebar')
             <!-- Main Content Area -->
             <div class="container-fluid mt-4">
                 @yield('content')
@@ -171,14 +152,43 @@
         @endguest
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            &copy; {{ now()->year }} {{ config('app.name', 'Laravel') }}. All rights reserved.
-        </div>
-    </footer>
+
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @elseif (session('error'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @elseif (session('warning'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: "{{ session('warning') }}",
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+    </script>
+    @stack('scripts')
+
 </body>
 
 </html>
