@@ -5,12 +5,41 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ __('Manage Users') }}</h5>
-                <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">Add New User</a>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-3 mb-2 mb-md-0">
+                        <h5 class="mb-0">{{ __('Manage Users') }}</h5>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <form action="{{ route('users.index') }}" method="GET"
+                            class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
+                            <select name="filter" id="filter" class="form-select form-select-sm" style="width: 200px;">
+                                <option value="">Please Select</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}"
+                                        {{ request('filter') == $role->name ? 'selected' : '' }}>
+                                        {{ ucfirst($role->name) }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <div class="btn-group" role="group" aria-label="Filter Buttons">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Filter</button>
+                                <a href="{{ route('users.index') }}" class="btn btn-outline-dark btn-sm">Clear</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-12 col-md-3 text-md-end">
+                        <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">Add New User</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="card-body">
+
+
+            <div class="card-body table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
@@ -56,9 +85,7 @@
 
             </div>
             <div class="card-footer ">
-
-                {{ $users->links() }} {{-- Pagination --}}
-
+                {{ $users->links() }}
             </div>
         </div>
     </div>

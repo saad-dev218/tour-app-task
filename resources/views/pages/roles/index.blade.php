@@ -8,7 +8,7 @@
                 <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm">Create New Role</a>
             </div>
 
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
