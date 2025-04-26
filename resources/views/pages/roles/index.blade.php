@@ -45,5 +45,5 @@
 @endsection
 
 @push('scripts')
-    @include('pages.roles.script')
+    @include('includes.delete_confirm')
 @endpush

@@ -12,6 +12,7 @@
               Roles & Permissions</a>
           <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users*') ? 'active' : '' }}">
               Manage Users</a>
-
+          <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users*') ? 'active' : '' }}">
+              Manage Tours</a>
       </div>
   </div>

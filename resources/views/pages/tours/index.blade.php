@@ -91,5 +91,5 @@
     </div>
 @endsection
 @push('scripts')
-    @include('includes.delete_confirm')
+    @include('pages.users.script')
 @endpush
