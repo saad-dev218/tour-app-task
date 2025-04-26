@@ -10,6 +10,8 @@
               Dashboard</a>
           <a href="{{ route('roles.index') }}" class="sidebar-link {{ request()->routeIs('roles*') ? 'active' : '' }}">
               Roles & Permissions</a>
+          <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users*') ? 'active' : '' }}">
+              Manage Users</a>
 
       </div>
   </div>
