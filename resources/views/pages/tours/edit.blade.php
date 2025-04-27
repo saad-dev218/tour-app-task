@@ -73,10 +73,14 @@
                                                     alt="Tour Image" style="height: 150px; object-fit: cover;">
                                                 <div class="card-footer">
                                                     <div class="text-center  align-items-center">
-                                                        <button type="button" class="btn btn-primary btn-sm"
-                                                            onclick="EditImage({{ $image->id }})">Update</button>
-                                                        <button class="btn btn-danger btn-sm" type="button"
-                                                            onclick="DeleteImage({{ $image->id }})">Delete</button>
+                                                        @can('edit_tour')
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                onclick="EditImage({{ $image->id }})">Update</button>
+                                                        @endcan
+                                                        @can('delete_tour')
+                                                            <button class="btn btn-danger btn-sm" type="button"
+                                                                onclick="DeleteImage({{ $image->id }})">Delete</button>
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             </div>

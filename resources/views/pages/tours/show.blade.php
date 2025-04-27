@@ -8,10 +8,14 @@
             <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                 <h5 class="mb-0">Tour Details</h5>
                 <div>
-                    @if (auth()->user()->role == 'admin' || (isset($tour) && $tour->created_by == auth()->id()))
-                        <a href="{{ route('tours.edit', $tour->id) }}" class="btn btn-warning btn-sm me-2">Edit Tour</a>
-                    @endif
-                    <a href="{{ route('tours.index') }}" class="btn btn-light btn-sm">Back</a>
+                    @can('edit_tour')
+                        @if (auth()->user()->hasRole('admin') || $tour->created_by == auth()->id())
+                            <a href="{{ route('tours.edit', $tour->id) }}" class="btn btn-warning btn-sm me-2">Edit Tour</a>
+                        @endif
+                    @endcan
+                    @can('view_tours')
+                        <a href="{{ route('tours.index') }}" class="btn btn-light btn-sm">Back</a>
+                    @endcan
                 </div>
             </div>
 

@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -115,9 +116,7 @@ class UserController extends Controller
         if ($id == auth()->user()->id) {
             return redirect()->route('users.index')->with('error', 'Cannot delete yourself.');
         }
-        if ($user->hasRole('admin')) {
-            $user->delete();
-        }
+        $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }

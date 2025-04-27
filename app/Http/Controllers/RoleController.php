@@ -12,6 +12,7 @@ use function App\Helpers\permissions;
 
 class RoleController extends Controller
 {
+
     /**
      * Display a listing of the roles.
      */
@@ -76,10 +77,12 @@ class RoleController extends Controller
             'permissions.*' => 'exists:permissions,name',
         ]);
 
+        // Update the role's name
         $role->update([
             'name' => $validated['name'],
         ]);
 
+        // Sync the permissions
         $role->syncPermissions($validated['permissions']);
 
         return redirect()
