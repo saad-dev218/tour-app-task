@@ -19,7 +19,7 @@ class Tour extends Model
         return $this->hasMany(TourImage::class);
     }
 
-    public function user()
+    public function planner()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

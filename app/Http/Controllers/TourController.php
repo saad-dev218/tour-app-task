@@ -13,7 +13,7 @@ class TourController extends Controller
      */
     public function index()
     {
-        $tours = Tour::with('user')->paginate(10);
+        $tours = Tour::with('planner')->paginate(10);
         return view('pages.tours.index', compact('tours'));
     }
 
