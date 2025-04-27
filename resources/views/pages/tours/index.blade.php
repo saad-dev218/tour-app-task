@@ -1,95 +1,65 @@
 @extends('layouts.app')
 
-@section('title', 'Manage Users')
+@section('title', 'Manage Tours')
 
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-3 mb-2 mb-md-0">
-                        <h5 class="mb-0">{{ __('Manage Users') }}</h5>
-                    </div>
-
-                    <div class="col-12 col-md-6 mb-2 mb-md-0">
-                        <form action="{{ route('users.index') }}" method="GET"
-                            class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
-                            <select name="filter" id="filter" class="form-select form-select-sm" style="width: 200px;">
-                                <option value="">Please Select</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->name }}"
-                                        {{ request('filter') == $role->name ? 'selected' : '' }}>
-                                        {{ ucfirst($role->name) }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                            <div class="btn-group" role="group" aria-label="Filter Buttons">
-                                <button type="submit" class="btn btn-outline-primary btn-sm">Filter</button>
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-dark btn-sm">Clear</a>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="col-12 col-md-3 text-md-end">
-                        <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">Add New User</a>
-                    </div>
-                </div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ __('Tours') }}</h5>
+                <a href="{{ route('tours.create') }}" class="btn btn-success btn-sm">Create New Tour</a>
             </div>
-
-
 
             <div class="card-body table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Created By</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($users as $user)
+                        @forelse ($tours as $tour)
                             <tr>
-                                <th scope="row">{{ $loop->iteration }} </th>
-                                <td>{{ ucfirst($user->name) }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @if ($user->roles->first())
-                                        <span class="badge bg-info text-dark">{{ $user->roles->first()->name }}</span>
-                                    @else
-                                        <span class="text-muted">No Role</span>
-                                    @endif
-                                </td>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $tour->title }}</td>
+                                <td>{{ \Carbon\Carbon::parse($tour->start_date)->format('d M Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($tour->end_date)->format('d M Y') }}</td>
+                                <td>{{ $tour->created_by ? $tour->user->name : 'N/A' }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
-
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                        class="d-inline delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
+                                    <a href="{{ route('tours.show', $tour->id) }}" class="btn btn-info btn-sm">View</a>
+                                    @if (auth()->user()->role == 'admin' || ($tour->created_by && $tour->created_by == auth()->id()))
+                                        <a href="{{ route('tours.edit', $tour->id) }}"
+                                            class="btn btn-primary btn-sm">Edit</a>
+                                        <form action="{{ route('tours.destroy', $tour->id) }}" method="POST"
+                                            class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center">No users found.</td>
+                                <td colspan="6" class="text-center">No tours found.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
-
-
             </div>
-            <div class="card-footer ">
-                {{ $users->links() }}
+
+            <div class="card-footer">
+                {{ $tours->links() }}
             </div>
         </div>
     </div>
 @endsection
+
 @push('scripts')
-    @include('pages.users.script')
+    @include('includes.delete_confirm')
 @endpush

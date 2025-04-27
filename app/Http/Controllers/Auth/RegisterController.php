@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -38,6 +38,14 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+    protected function redirectTo()
+    {
+        if (auth()->user()->hasRole('user') || auth()->user()->hasRole('tour-planner')) {
+            return '/tours';
+        }
+
+        return '/home';
     }
 
     /**
@@ -63,10 +71,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->assignRole('user');
+
+        return $user;
     }
 }
