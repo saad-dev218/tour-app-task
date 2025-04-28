@@ -13,7 +13,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('permission:view_dashboard');
 
     Route::resource('roles', RoleController::class)->middleware('permission:manage_roles_and_permission');
     Route::resource('users', UserController::class)->middleware('permission:manage_users');
