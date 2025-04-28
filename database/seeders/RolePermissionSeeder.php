@@ -31,12 +31,9 @@ class RolePermissionSeeder extends Seeder
                 if ($category === 'Tour Planner') {
                     $tourPlannerRole->givePermissionTo($permission);
                 }
-
-                if ($category === 'User') {
-                    $userRole->givePermissionTo($permission);
-                }
             }
         }
+        $userRole->givePermissionTo(['view_tours', 'view_tour_detail']);
 
         $allPermissions = Permission::all();
         $adminRole->syncPermissions($allPermissions);

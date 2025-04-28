@@ -75,7 +75,7 @@
                                                     <div class="text-center  align-items-center">
                                                         @can('edit_tour')
                                                             <button type="button" class="btn btn-primary btn-sm"
-                                                                onclick="EditImage({{ $image->id }})">Update</button>
+                                                                onclick="EditImage({{ $image->id }})">Edit Image</button>
                                                         @endcan
                                                         @can('delete_tour')
                                                             <button class="btn btn-danger btn-sm" type="button"
